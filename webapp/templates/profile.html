@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Athlete profile</h1>
+
+{% if saved %}
+<p class="success">Saved.</p>
+{% endif %}
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="/profile" class="stack-form">
+  <label>
+    Max HR (bpm)
+    <input type="number" name="max_hr" step="1" min="100" max="220"
+           placeholder="optional"
+           value="{{ profile.max_hr | round(0) | int if profile.max_hr is not none else '' }}" />
+  </label>
+  <label>
+    FTP — functional threshold power (W)
+    <input type="number" name="ftp_watts" step="1" min="50" max="600"
+           placeholder="optional"
+           value="{{ profile.ftp_watts | round(0) | int if profile.ftp_watts is not none else '' }}" />
+  </label>
+  <p class="muted small">Leave blank to clear. Values outside ranges are rejected.</p>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

@@ -3,3 +3,8 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+webapp_run.log
+triathlon_data.db
+*.log
+etl_run.log
+ai_coach_run.log

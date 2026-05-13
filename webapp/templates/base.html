@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{{ title }}{% endblock %} · Triathlon Coach</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Triathlon Coach</div>
+    <nav>
+      <a href="/">Dashboard</a>
+      <a href="/profile">Profile</a>
+      <a href="/races">Races</a>
+      <a href="/coach">AI plan</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

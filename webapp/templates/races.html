@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Races &amp; goals</h1>
+<p><a class="button" href="/races/new">Add race</a></p>
+
+{% if races %}
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Discipline</th>
+      <th>Goal</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in races %}
+    <tr>
+      <td>{{ r.race_date }}</td>
+      <td>{{ r.name }}</td>
+      <td>{{ r.discipline }}</td>
+      <td>{{ r.goal_type }}{% if r.goal_value %}: {{ r.goal_value }}{% endif %}</td>
+      <td>{{ r.status }}</td>
+      <td class="nowrap">
+        <a href="/races/{{ r.id }}/edit">Edit</a>
+        <form method="post" action="/races/{{ r.id }}/delete" class="inline-form" onsubmit="return confirm('Delete this race?');">
+          <button type="submit" class="link-button">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No races yet.</p>
+{% endif %}
+{% endblock %}

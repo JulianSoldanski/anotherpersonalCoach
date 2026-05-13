@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>AI training plan</h1>
+
+<p class="muted">Uses your last 7 days of activities, athlete profile (Max HR / FTP), and upcoming planned races from this app.</p>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+<form method="post" action="/coach/generate">
+  <button type="submit">Generate {{ plan_days | default(7) }}-day plan</button>
+</form>
+
+{% if plan %}
+<section class="card plan-output">
+  <h2>Plan</h2>
+  <pre>{{ plan }}</pre>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+{% if not db_exists %}
+<p class="notice">No database file at <code>{{ db_path }}</code>. Run <code>python etljob.py</code> to create and populate it.</p>
+{% else %}
+
+<section class="card">
+  <h2>Athlete profile</h2>
+  {% if profile.max_hr or profile.ftp_watts %}
+  <p>
+    {% if profile.max_hr %}<strong>Max HR:</strong> {{ profile.max_hr | round(0) | int }} bpm{% endif %}
+    {% if profile.max_hr and profile.ftp_watts %} · {% endif %}
+    {% if profile.ftp_watts %}<strong>FTP:</strong> {{ profile.ftp_watts | round(0) | int }} W{% endif %}
+  </p>
+  {% else %}
+  <p class="muted">Set Max HR and FTP on the <a href="/profile">Profile</a> page.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Last 7 days (by discipline)</h2>
+  {% if weekly.by_type %}
+  <table class="data-table">
+    <thead><tr><th>Type</th><th>Sessions</th><th>Distance (km)</th><th>Time (min)</th></tr></thead>
+    <tbody>
+      {% for t, v in weekly.by_type.items() %}
+      <tr>
+        <td>{{ t }}</td>
+        <td>{{ v.sessions | int }}</td>
+        <td>{{ v.km | round(1) }}</td>
+        <td>{{ v.minutes | round(0) | int }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No activities in this window yet.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Upcoming races</h2>
+  {% if upcoming_races %}
+  <ul class="race-list">
+    {% for r in upcoming_races %}
+    <li><strong>{{ r.race_date }}</strong> — {{ r.name }} <span class="muted">({{ r.discipline }})</span></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No planned races ahead. <a href="/races/new">Add one</a>.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Recent activities</h2>
+  {% if activities %}
+  <table class="data-table">
+    <thead><tr><th>Date</th><th>Type</th><th>Name</th><th>km</th><th>min</th></tr></thead>
+    <tbody>
+      {% for a in activities %}
+      <tr>
+        <td>{{ a.date }}</td>
+        <td>{{ a.type }}</td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.distance_km | round(2) }}</td>
+        <td>{{ a.time_min | round(0) | int }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No activities stored. Run ETL.</p>
+  {% endif %}
+</section>
+
+{% endif %}
+{% endblock %}
